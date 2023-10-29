@@ -9,5 +9,14 @@ public class ItemData : ScriptableObject
     public string name;
     public ItemType itemType;
     public GameObject prefab;
-    public Sprite visual;
+    public Texture visual;
+}
+
+public enum ItemType
+{
+    Default,
+    Cut,
+    Cook,
+    CutAndCook,
+    Plate
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CuttingBoard : MonoBehaviour
 {
     public List<GameObject> visuals;
-    public ItemData _actualItem;
+    public Item _actualItem;
 
     public void UpdateVisual(ItemData actualItem = null)
     {

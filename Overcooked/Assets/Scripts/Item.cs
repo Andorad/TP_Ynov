@@ -9,11 +9,3 @@ public class Item : MonoBehaviour
     public bool isCut;
     public bool isCooked;
 }
-
-public enum ItemType
-{
-    Nothing,
-    Cut,
-    Cook,
-}
-

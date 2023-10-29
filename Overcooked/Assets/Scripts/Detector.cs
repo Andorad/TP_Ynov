@@ -9,6 +9,7 @@ public class Detector : MonoBehaviour
     public List<GameObject> cuttingBoards;
 
     public List<GameObject> hotPlates;
+    public List<GameObject> plateGiver;
 
     private void OnTriggerEnter(Collider other) 
     {
@@ -23,6 +24,10 @@ public class Detector : MonoBehaviour
         else if(other.CompareTag("HotPlate"))
         {
             hotPlates.Add(other.gameObject);
+        }
+        else if(other.CompareTag("PlateGiver"))
+        {
+            plateGiver.Add(other.gameObject);
         }
     }
 
@@ -39,6 +44,10 @@ public class Detector : MonoBehaviour
         else if(other.CompareTag("HotPlate"))
         {
             hotPlates.Remove(other.gameObject);
+        }
+        else if(other.CompareTag("PlateGiver"))
+        {
+            plateGiver.Remove(other.gameObject);
         }
     }
 }
