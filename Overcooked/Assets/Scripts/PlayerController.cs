@@ -1,42 +1,40 @@
-using UnityEngine.InputSystem;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    private Vector2 _input;
-    private CharacterController characterController;
-    private GameManager gameManager;
-    private Vector3 direction;
-
-
-    public Item actualItemInHands;
-
+    [Header("References")]
     [SerializeField]
     private Detector detector;
     [SerializeField]
     private Animator animator;
 
-    [SerializeField]
-    private List<GameObject> visuals;
+    private CharacterController characterController;
+    private GameManager gameManager;
 
-    [SerializeField]
-    private float speed;
+    public Item actualItemInHands;
 
-    [SerializeField]
-    private KeyCode interact;
-
-    [SerializeField]
-    private Transform spawnPoint;
-
+    [Header("Variables")]
+    private Vector2 _input;
+    private Vector3 direction;
     private bool canMove;
 
+    [SerializeField]
+    private List<GameObject> visuals;
+    [SerializeField]
+    private float speed;
+    [SerializeField]
+    private KeyCode interact;
+    [SerializeField]
+    private Transform spawnPoint;
     [SerializeField]
     private float cutTime;
     [SerializeField]
     private float cookTime;
+
 
     private void Awake()
     {
@@ -56,7 +54,6 @@ public class PlayerController : MonoBehaviour
 
             characterController.Move(move * speed * Time.deltaTime);
         }
-
 
         if(Input.GetKeyDown(interact))
         {
@@ -119,7 +116,6 @@ public class PlayerController : MonoBehaviour
             actualItemInHands = detector.gameObjectsInRange[0].GetComponent<Item>();
             detector.gameObjectsInRange[0].SetActive(false);
             detector.gameObjectsInRange.RemoveAt(0);
-            //Prendre le plus proche
         }
         UpdateVisual();
     }
@@ -225,6 +221,10 @@ public class PlayerController : MonoBehaviour
                 gameManager.recipesToDestroy.RemoveAt(1);
                 gameManager.AddScore();
             }
+            else
+            {
+                gameManager.GameOver();
+            }
         }
     }
 
@@ -244,7 +244,6 @@ public class PlayerController : MonoBehaviour
     IEnumerator Cook()
     {
          canMove = false;
-        //PlayAnimation
         yield return new WaitForSeconds(cookTime);
         detector.hotPlates[0].GetComponent<HotPlate>()._actualItem.isCooked = true;
         actualItemInHands = detector.hotPlates[0].GetComponent<HotPlate>()._actualItem;

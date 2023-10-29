@@ -5,9 +5,7 @@ using UnityEngine;
 public class Detector : MonoBehaviour
 {
     public List<GameObject> gameObjectsInRange;
-
     public List<GameObject> cuttingBoards;
-
     public List<GameObject> hotPlates;
     public List<GameObject> plateGiver;
 

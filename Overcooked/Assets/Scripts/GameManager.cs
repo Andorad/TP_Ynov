@@ -2,28 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private List<Recipes> recipeList;
+    [Header("Variables")]
     public List<Recipes> actualRecipeList;
+    public List<GameObject> recipesToDestroy;
+
+    [SerializeField] private List<Recipes> recipeList;
+
     [SerializeField] private GameObject recipe;
     [SerializeField] private GameObject recipes;
     [SerializeField] private GameObject item;
+    [SerializeField] private GameObject finalPanel;
+    [SerializeField] private GameObject pausePanel;
+
     [SerializeField] private Transform items;
+
     [SerializeField] private int score;
-    public List<GameObject> recipesToDestroy;
+
+    [SerializeField] private Text scoreText;
+
     private bool canCreateRecipe;
+    private bool gameIsPaused;
+
     private int recipeCount;
 
     private void Start()
     {
         canCreateRecipe = true;
+        scoreText.text = "Score : " + score;
     }
 
     private void Update()
     {
-
         if(canCreateRecipe)
         {
             if(recipesToDestroy.Count <= 3)
@@ -32,6 +45,38 @@ public class GameManager : MonoBehaviour
                 CreateNewRecipe(recipeList[Random.Range(0, recipeList.Count - 1)]);
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (gameIsPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
+        }
+    }
+
+    public void AddScore()
+    {
+        score += (int)recipesToDestroy[0].GetComponent<RecipeTimeController>().actualTimeLeft;
+        scoreText.text = "Score : " + score;
+        Destroy(recipesToDestroy[0]);
+    }
+
+    public void GameOver()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        finalPanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void GoToMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void CreateNewRecipe(Recipes _Recipe)
@@ -50,10 +95,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddScore()
+    private void Pause()
     {
-        score += (int) recipesToDestroy[0].GetComponent<RecipeTimeController>().actualTimeLeft;
-        Destroy(recipesToDestroy[0]);
+        pausePanel.SetActive(true);
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    private void Resume()
+    {
+        pausePanel.SetActive(false);
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     IEnumerator WaitForNextRecipe()
@@ -62,5 +115,4 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(10f);
         canCreateRecipe = true;
     }
-
 }

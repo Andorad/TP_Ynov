@@ -8,7 +8,6 @@ public class MainMenuController : MonoBehaviour
 {
     [SerializeField]
     private int[] scenesToLoad;
-
     [SerializeField]
     private Dropdown resolutionsDropdown;
 
